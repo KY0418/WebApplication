@@ -1,0 +1,53 @@
+services:
+  backend:
+    container_name: back
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+        - dockerenv:/src/api/.venv
+        - .:/src
+    ports:
+      - 8000:8000
+    environment:
+      - WATCHFILES_FORCE_POLLING=true
+    tty: true
+  db:
+    container_name: PostgresPrac
+    image: postgres:${DB_VERSION}
+    environment: 
+      POSTGRES_DB: ${DB}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: ${TZ}
+    volumes:
+      - postgres_data:/var/lib/postgres
+    ports: 
+      - 5432:5432
+
+  web:
+    container_name: frontend
+    build: 
+      context: ./web
+      dockerfile: Dockerfile
+    volumes:
+      - ./web:/app
+      # - dev-vol:/web/task-vue
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    tty: true
+
+volumes:
+  dockerenv:
+    driver: local
+  postgres_data:
+    driver: local
+  front:
+    driver: local
+
+
+# . を入れるとDockerが隠しファイルとして認識してしまうことがあるため
+# フォルダをマウントしたいときは.を除いてvolumesに記述しなければならない
+# ローカルに.sampleのような名前で保存していたとしても.を取り除く
