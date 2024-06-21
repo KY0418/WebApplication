@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from modules.master import api
+from modules.login import api
 import logging
 
 logging.getLogger('uvicorn').setLevel(logging.DEBUG)

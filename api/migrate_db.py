@@ -1,6 +1,6 @@
 from peewee import PostgresqlDatabase
 import config
-from modules.master.models import LoginInfo
+from modules.login.models import LoginInfo
 
 engine= PostgresqlDatabase(database=config.DB,user=config.USER,host=config.HOST,port=config.PORT,password=config.PASS)
 
